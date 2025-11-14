@@ -1,0 +1,6 @@
+Flask
+flask-cors        # Crucial for React communication
+PyPDF2            # For PDF Parsing [cite: 69]
+pytesseract       # For OCR (Image Text Extraction) [cite: 70]
+Pillow            # Dependency for pytesseract (Image handling)
+nltk              # For basic summarization/tokenization
