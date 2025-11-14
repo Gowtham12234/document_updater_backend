@@ -4,7 +4,15 @@ import heapq
 from collections import defaultdict
 
 import nltk
-from nltk.tokenize import sent_tokenize, word_tokenize
+
+
+def simple_word_tokenize(text):
+    return re.findall(r"\b\w+\b", text.lower())
+
+def simple_sent_tokenize(text):
+    sentences = re.split(r'(?<=[.!?])\s+', text.strip())
+    return [s for s in sentences if s]
+
 
 # Ensure required NLTK resources are available (best-effort)
 def ensure_nltk_resource(resource_name, resource_type='corpora'):
@@ -79,7 +87,8 @@ def summarize_text(text: str, length: str = 'medium') -> str:
         target_sentences = 6
 
     try:
-        sentences = sent_tokenize(text)
+        sentences = simple_sent_tokenize(text)
+
     except Exception as e:
         # As a fallback, split by period if sent_tokenize fails
         print(f"[summarizer] sent_tokenize failed, falling back to split: {e}")
@@ -92,7 +101,8 @@ def summarize_text(text: str, length: str = 'medium') -> str:
     stop_words = get_stopwords()
     word_frequencies = defaultdict(int)
 
-    for word in word_tokenize(text.lower()):
+    for word in simple_word_tokenize(text.lower()):
+
         # consider words with alphanumeric characters, exclude stopwords
         if word not in stop_words and re.match(r'\w', word):
             word_frequencies[word] += 1
